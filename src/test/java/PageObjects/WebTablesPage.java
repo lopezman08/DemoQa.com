@@ -42,27 +42,18 @@ public class WebTablesPage {
     @FindBy(xpath = "//button[@id='submit']")
     public WebElement BTNSubmit;
 
-    public int BuscarCantidadElementosTabla () {
-        boolean isVacio = false;
-        int A=1;
-        WebElement Resultado;
-        List list;
-        int cantidad =0;
-        do {
-            list = driver.findElements(By.xpath("//body/div[@id='app']/div[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[2]/div["+A+"]/div[1]/div[7]/div[1]/span[2]/*[1]"));
-            isVacio = list.isEmpty();
-            A++;
-            cantidad += list.size();
-        } while (!isVacio);
-        return cantidad;
-
+    public int GetCountElementsTable() {
+        List<WebElement> list_Al = driver.findElements(By.xpath("//span[contains(@id,'delete-record')]"));
+        return list_Al.size();
     }
 
-    public WebElement Eliminar(){
-        int cantElementosTabla = 4;
-        Random claseRandom = new Random(); // Esto crea una instancia de la Clase Random
-        int random = claseRandom.nextInt(cantElementosTabla);
-        System.out.println(random);
+    public WebElement Delete(){
+        int cantElementsTable = GetCountElementsTable();
+        int random = (int)(Math.random()*cantElementsTable+1);
         return driver.findElement(By.xpath("//*[@id=\"delete-record-"+random+"\"]"));
+    }
+
+    public WebElement FindText(String text){
+        return driver.findElement(By.xpath("//div[text()='"+text+"']"));
     }
 }

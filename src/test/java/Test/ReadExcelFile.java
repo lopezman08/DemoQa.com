@@ -42,7 +42,6 @@ public class ReadExcelFile {
         XSSFRow row = newSheet.getRow(rowNumber);
         XSSFCell cell = row.getCell(cellNumber);
 
-
         return cell.getStringCellValue();
     }
 

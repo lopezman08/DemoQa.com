@@ -3,12 +3,14 @@ package Test;
 import PageObjects.ElementsPage;
 import PageObjects.HomePage;
 import PageObjects.WebTablesPage;
+import PageObjects.WidgetsPage;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
-
 import java.io.IOException;
+import static org.junit.Assert.assertEquals;
 
 
 public class TestBrowsing extends TestBase {
@@ -17,6 +19,7 @@ public class TestBrowsing extends TestBase {
     private String URLBase = "https://demoqa.com/";
     public HomePage homePage;
     public ElementsPage elementsPage;
+    public WidgetsPage widgetsPage;
     public WebTablesPage webTablesPage;
     public ReadExcelFile readExcelFile;
 
@@ -26,14 +29,14 @@ public class TestBrowsing extends TestBase {
         homePage = new HomePage(driver);
         elementsPage = new ElementsPage(driver);
         webTablesPage = new WebTablesPage(driver);
+        widgetsPage = new WidgetsPage(driver);
         readExcelFile = new ReadExcelFile();
     }
 
     @Test
-    public void Mi_Test_Case() throws IOException {
+    public void AddElement() throws IOException {
 
-        String filepath = "C:\\Users\\oscar.lopez\\Documents\\AutomationToolsQA.xlsx";
-        String texto = "Kierra";
+        String filepath = "src/test/resources/AutomationToolsQA.xlsx";
 
         String writeFirstName = readExcelFile.getCellValue(filepath,"Data 1", 0,0);
         String writeLastName = readExcelFile.getCellValue(filepath,"Data 1", 0,1);
@@ -54,7 +57,29 @@ public class TestBrowsing extends TestBase {
         webTablesPage.TXTSalary.sendKeys(writeSalary);
         webTablesPage.TXTDepartment.sendKeys(writeDepartment);
         webTablesPage.BTNSubmit.click();
-        ex.executeScript("arguments[0].click();", webTablesPage.Eliminar());
+        assertEquals(writeFirstName, webTablesPage.FindText(writeFirstName).getText());
+
+        int countElements = webTablesPage.GetCountElementsTable();
+        ex.executeScript("arguments[0].click();", webTablesPage.Delete());
+        assertEquals(countElements-1,webTablesPage.GetCountElementsTable());
+
+    }
+
+    @Test
+    public void SelectDate() throws IOException {
+
+        JavascriptExecutor ex = (JavascriptExecutor) driver;
+        ex.executeScript("arguments[0].click();", homePage.BTNWidgets);
+        ex.executeScript("arguments[0].click();", widgetsPage.BTNWebDatePicker);
+
+        widgetsPage.INPDate.click();
+        widgetsPage.SLCMonth.click();
+        widgetsPage.SelectDate();
+
+        widgetsPage.SLCDateTime.click();
+        widgetsPage.SLCMonthTime.click();
+        ex.executeScript("arguments[0].click();", widgetsPage.SLCYearDateTime);
+        widgetsPage.SelectDateTime();
 
     }
 
