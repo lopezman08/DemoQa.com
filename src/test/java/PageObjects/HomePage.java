@@ -18,5 +18,8 @@ public class HomePage {
     @FindBy(xpath = "//*[@id='app']/div/div/div[2]/div/div[4]")
     public WebElement BTNWidgets;
 
+    @FindBy(xpath = "//body/div[@id='app']/div[1]/div[1]/div[2]/div[1]/div[3]")
+    public WebElement BTNAlertsFrameWindows;
+
 
 }
